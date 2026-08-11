@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#355144" />
+  <title>RootRoom Tile Room</title>
+  <link rel="stylesheet" href="rootroom.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">🌳</div>
+      <div>
+        <h1>RootRoom</h1>
+        <p>Interactive Tile Room</p>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="saveBtn" class="header-btn">Save</button>
+      <button id="loadBtn" class="header-btn">Load</button>
+      <button id="fullscreenBtn" class="header-btn">Full Screen</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="tile-bank" aria-label="Tile bank">
+      <div class="bank-heading">
+        <div>
+          <h2>Tile Bank</h2>
+          <p>Click a tile to place it on the board, then drag it where you want it.</p>
+        </div>
+        <label class="search-wrap">
+          <span class="sr-only">Search tiles</span>
+          <input id="tileSearch" type="search" placeholder="Search tiles…" autocomplete="off" />
+        </label>
+      </div>
+
+      <div class="category-tabs" id="categoryTabs" role="tablist" aria-label="Tile categories"></div>
+      <div class="tile-tray" id="tileTray" aria-live="polite"></div>
+    </section>
+
+    <section class="board-panel">
+      <div class="board-toolbar">
+        <div class="tool-group">
+          <strong>Word-Building Board</strong>
+          <button id="undoBtn" class="tool-btn">Undo</button>
+          <button id="redoBtn" class="tool-btn">Redo</button>
+          <button id="duplicateBtn" class="tool-btn">Duplicate</button>
+          <button id="deleteBtn" class="tool-btn">Delete</button>
+          <button id="clearBtn" class="tool-btn danger">Clear</button>
+        </div>
+        <div class="board-status">
+          <span id="tileCount">0 tiles</span>
+        </div>
+      </div>
+
+      <div id="board" class="board" tabindex="0" aria-label="Interactive word-building board">
+        <div id="emptyState" class="empty-state">
+          <div>
+            <strong>Your tile room is ready.</strong>
+            <span>Choose a tile above to begin.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="help-bar">
+        <span><strong>Tip:</strong> click a tile above to add it. Drag board tiles with your mouse or finger.</span>
+        <span>Double-click a board tile to duplicate it.</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

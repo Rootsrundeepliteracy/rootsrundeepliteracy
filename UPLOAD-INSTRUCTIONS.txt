@@ -1,0 +1,59 @@
+ROOTROOM TILE ROOM v1 — GITHUB DESKTOP INSTALL
+
+You only need to copy the "rootroom" folder into your local GitHub website folder.
+
+STEP 1 — UNZIP THIS DOWNLOAD
+After unzipping, you will see:
+
+rootroom/
+    index.html
+    rootroom.css
+    app.js
+
+STEP 2 — OPEN YOUR LOCAL GITHUB FOLDER
+In GitHub Desktop:
+Repository > Show in Explorer
+
+You told me this folder currently contains:
+- index.html
+- README.md
+- style.css
+
+STEP 3 — COPY THE ROOTROOM FOLDER
+Drag/copy the ENTIRE "rootroom" folder into that same folder.
+
+It should now look like:
+
+rootsrundeepliteracy/
+    index.html
+    README.md
+    style.css
+    rootroom/
+        index.html
+        rootroom.css
+        app.js
+
+STEP 4 — RETURN TO GITHUB DESKTOP
+GitHub Desktop should show 3 new files.
+
+In the Summary box type:
+Add RootRoom tile room
+
+Click:
+Commit to main
+
+Then click:
+Push origin
+
+STEP 5 — WAIT FOR CLOUDFLARE
+Cloudflare should deploy automatically.
+
+Then open:
+https://rootsrundeepliteracy.com/rootroom/
+
+HOW TO USE IT WITH A STUDENT RIGHT NOW
+- Keep Teams only for video/audio and for sharing curriculum documents.
+- Have the student open the RootRoom URL directly on their own computer.
+- The student clicks tiles in the top bank to add them, then drags them locally.
+- This avoids Teams remote-control lag.
+- Teacher and student boards are NOT synchronized yet. Live shared rooms are the next build.
