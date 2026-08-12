@@ -3,72 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>RootRoom Live v2.2</title>
+<title>RootRoom Live v3</title>
 <style>
 :root{
   --forest:#355144;--forest-dark:#2a4136;--ink:#26372f;--muted:#69776f;
-  --paper:#fffdf8;--line:#d7ded8;--shadow:0 10px 24px rgba(38,55,47,.10);
+  --paper:#fffdf8;--line:#d7ded8;--shadow:0 12px 30px rgba(38,55,47,.10);
   --vowel:#f2aaa6;--consonant:#bddbf0;--team:#bfdfc4;--chunk:#efd48f;
   --prefix:#d7c2ea;--suffix:#efc5dd;--special:#d9dbd9;
-  --online:#2f7d4a;--wait:#b47b32;--offline:#a15650
+  --online:#2f7d4a;--wait:#b47b32;--offline:#a15650;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f5f1e9,#ede8de)}
 button,input{font:inherit}
-.topbar{padding:11px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:#fff;background:linear-gradient(135deg,var(--forest-dark),var(--forest)}
-.brand{display:flex;align-items:center;gap:10px}.mark{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.14);font-size:1.35rem}
-.brand h1{margin:0;font-size:1.15rem}.brand p{margin:2px 0 0;font-size:.8rem;opacity:.82}
-.version{font-size:.72rem;opacity:.78}
-.wrap{width:min(1720px,calc(100% - 18px));margin:9px auto 20px;display:grid;gap:9px}
-.room-bar{background:#fffdf8;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:10px 12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.room-bar strong{margin-right:3px}
-#roomCode{width:175px;text-transform:uppercase;border:1px solid #bec9c1;border-radius:9px;padding:8px 10px;font-weight:800;letter-spacing:.06em}
-.primary{background:var(--forest);color:#fff;border:1px solid var(--forest);border-radius:9px;padding:8px 11px;cursor:pointer;font-weight:700}
-.secondary{background:#fff;color:#415249;border:1px solid #c8d1cb;border-radius:9px;padding:8px 11px;cursor:pointer}
-.secondary:disabled{opacity:.45;cursor:not-allowed}
+.topbar{min-height:70px;padding:11px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:#fff;background:linear-gradient(135deg,var(--forest-dark),var(--forest))}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.14);font-size:1.35rem}
+.brand h1{margin:0;font-size:1.15rem}
+.brand p{margin:2px 0 0;font-size:.8rem;opacity:.82}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.head-btn{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.1);color:#fff;border-radius:9px;padding:7px 10px;cursor:pointer}
+.workspace{width:min(1720px,calc(100% - 18px));margin:9px auto 20px;display:grid;gap:9px}
+.live-panel,.tile-bank,.board-panel{background:rgba(255,253,248,.98);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.live-panel{padding:10px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.live-panel strong{margin-right:2px}
+#roomCode{width:180px;text-transform:uppercase;border:1px solid #bec9c1;border-radius:9px;padding:8px 10px;font-weight:800;letter-spacing:.06em}
+.primary-btn{background:var(--forest);color:#fff;border:1px solid var(--forest);border-radius:9px;padding:8px 11px;cursor:pointer;font-weight:700}
+.secondary-btn{background:#fff;color:#415249;border:1px solid #c8d1cb;border-radius:9px;padding:8px 11px;cursor:pointer}
+.secondary-btn:disabled{opacity:.45;cursor:not-allowed}
 .status{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--muted)}
-.dot{width:10px;height:10px;border-radius:50%;background:var(--offline)}.dot.online{background:var(--online)}.dot.wait{background:var(--wait)}
-.note{width:100%;font-size:.75rem;color:#748078}
-.tile-bank,.board-panel{background:rgba(255,253,248,.98);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
-.bank-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 12px;border-bottom:1px solid var(--line)}
-.bank-head h2{margin:0 0 2px;font-size:.95rem}.bank-head p{margin:0;color:var(--muted);font-size:.76rem}
-#search{width:min(300px,35vw);border:1px solid #bec9c1;border-radius:9px;padding:7px 9px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--offline)}
+.dot.online{background:var(--online)}
+.dot.wait{background:var(--wait)}
+.live-help{width:100%;font-size:.75rem;color:#748078}
+.bank-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.bank-head h2{margin:0 0 2px;font-size:.98rem}
+.bank-head p{margin:0;color:var(--muted);font-size:.78rem}
+#search{width:min(330px,38vw);border:1px solid #bec9c1;border-radius:9px;padding:8px 10px}
 .groups{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:8px;padding:9px 10px 11px}
 .group{border:1px solid #e0e5e1;border-radius:11px;background:#fffefb;padding:7px}
 .group h3{margin:0 0 6px;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#5d6c64}
 .tray{display:flex;flex-wrap:wrap;gap:5px}
 .tile{min-width:42px;height:40px;padding:4px 8px;border:2px solid rgba(43,55,49,.18);border-radius:9px;display:inline-flex;align-items:center;justify-content:center;font-size:1rem;font-weight:800;color:#26372f;box-shadow:0 2px 6px rgba(34,49,41,.07);user-select:none;-webkit-user-select:none}
-.lib{cursor:pointer}.vowel{background:var(--vowel)}.consonant{background:var(--consonant)}.team{background:var(--team)}.chunk{background:var(--chunk)}.prefix{background:var(--prefix)}.suffix{background:var(--suffix)}.special{background:var(--special)}
+.lib{cursor:pointer}
+.vowel{background:var(--vowel)}
+.consonant{background:var(--consonant)}
+.team{background:var(--team)}
+.chunk{background:var(--chunk)}
+.prefix{background:var(--prefix)}
+.suffix{background:var(--suffix)}
+.special{background:var(--special)}
 .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--line);background:#fbfaf6}
-.tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.tools strong{font-size:.88rem;margin-right:5px}.tool{border:1px solid #cad4cd;background:#fff;color:#415249;border-radius:8px;padding:6px 9px;cursor:pointer}.tool:disabled{opacity:.45}.danger{color:#9e4f49;border-color:#dfc1be}
+.tools{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tools strong{font-size:.88rem;margin-right:5px}
+.tool{border:1px solid #cad4cd;background:#fff;color:#415249;border-radius:8px;padding:6px 9px;cursor:pointer}
+.tool:disabled{opacity:.45}
+.danger{color:#9e4f49;border-color:#dfc1be}
 #board{position:relative;min-height:590px;overflow:hidden;background:linear-gradient(to right,rgba(86,106,95,.065) 1px,transparent 1px),linear-gradient(to bottom,rgba(86,106,95,.065) 1px,transparent 1px),#fff;background-size:32px 32px;touch-action:none}
-.board-tile{position:absolute;z-index:3;min-width:58px;height:54px;font-size:1.32rem;cursor:grab;touch-action:none}.board-tile.dragging{cursor:grabbing;z-index:20;box-shadow:0 10px 22px rgba(36,50,43,.22)}.board-tile.selected{outline:3px solid var(--forest);outline-offset:3px}
-.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#89938d;pointer-events:none}.empty strong{display:block;color:#607068;margin-bottom:3px}.hidden{display:none!important}
+.board-tile{position:absolute;z-index:3;min-width:58px;height:54px;font-size:1.32rem;cursor:grab;touch-action:none}
+.board-tile.dragging{cursor:grabbing;z-index:20;box-shadow:0 10px 22px rgba(36,50,43,.22)}
+.board-tile.selected{outline:3px solid var(--forest);outline-offset:3px}
+.empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#89938d;pointer-events:none}
+.empty strong{display:block;color:#607068;margin-bottom:3px}
+.hidden{display:none!important}
 .help{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:7px 10px;border-top:1px solid var(--line);background:#faf8f3;font-size:.77rem;color:#6c7872}
 @media(max-width:1250px){.groups{grid-template-columns:repeat(3,minmax(210px,1fr))}}
 @media(max-width:900px){.groups{grid-template-columns:repeat(2,minmax(210px,1fr))}}
-@media(max-width:620px){.topbar,.bank-head,.toolbar{align-items:flex-start}.topbar,.bank-head,.toolbar{flex-direction:column}#search{width:100%}.groups{grid-template-columns:1fr}.status{margin-left:0}}
+@media(max-width:620px){
+  .topbar,.bank-head,.toolbar{align-items:flex-start}
+  .topbar,.bank-head,.toolbar{flex-direction:column}
+  #search{width:100%}
+  .groups{grid-template-columns:1fr}
+  .status{margin-left:0}
+}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="mark">🌳</div><div><h1>RootRoom Live</h1><p>Shared interactive tile room <span class="version">v2.2</span></p></div></div>
+  <div class="brand">
+    <div class="brand-mark">🌳</div>
+    <div><h1>RootRoom Live</h1><p>Shared Interactive Tile Room · v3</p></div>
+  </div>
+  <div class="actions">
+    <button id="full" class="head-btn">Full Screen</button>
+  </div>
 </header>
 
-<main class="wrap">
-<section class="room-bar">
+<main class="workspace">
+<section class="live-panel">
   <strong>Live Room</strong>
   <input id="roomCode" maxlength="12" placeholder="ROOM CODE" aria-label="Room code">
-  <button id="createRoom" class="primary">Create Room</button>
-  <button id="joinRoom" class="secondary">Join Room</button>
-  <button id="copyLink" class="secondary" disabled>Copy Student Link</button>
-  <div class="status"><span id="statusDot" class="dot"></span><span id="statusText">Not connected</span></div>
-  <div class="note">Teacher and student use the same room link. Board changes sync automatically.</div>
+  <button id="createRoom" class="primary-btn">Create Room</button>
+  <button id="joinRoom" class="secondary-btn">Join Room</button>
+  <button id="copyLink" class="secondary-btn" disabled>Copy Student Link</button>
+  <div class="status">
+    <span id="statusDot" class="dot"></span>
+    <span id="statusText">Not connected</span>
+  </div>
+  <div class="live-help">Create a room, send the student link, and both of you work on the same board.</div>
 </section>
 
 <section class="tile-bank">
   <div class="bank-head">
-    <div><h2>Tile Bank</h2><p>All tiles are visible at once.</p></div>
+    <div><h2>Tile Bank</h2><p>All tiles are visible. Click a tile to add it to the shared board.</p></div>
     <input id="search" type="search" placeholder="Search tiles…">
   </div>
   <div id="groups" class="groups"></div>
@@ -76,11 +112,25 @@ button,input{font:inherit}
 
 <section class="board-panel">
   <div class="toolbar">
-    <div class="tools"><strong>Word-Building Board</strong><button id="undo" class="tool">Undo</button><button id="redo" class="tool">Redo</button><button id="dup" class="tool">Duplicate</button><button id="del" class="tool">Delete</button><button id="clear" class="tool danger">Clear</button></div>
+    <div class="tools">
+      <strong>Word-Building Board</strong>
+      <button id="undo" class="tool">Undo</button>
+      <button id="redo" class="tool">Redo</button>
+      <button id="dup" class="tool">Duplicate</button>
+      <button id="del" class="tool">Delete</button>
+      <button id="clear" class="tool danger">Clear</button>
+    </div>
     <span id="count">0 tiles</span>
   </div>
-  <div id="board"><div id="empty" class="empty"><div><strong>Your tile room is ready.</strong><span>Create or join a room, then choose a tile above.</span></div></div></div>
-  <div class="help"><span>Click a tile to add it. Drag tiles with mouse or finger.</span><span>Both computers must use the same room code.</span></div>
+  <div id="board">
+    <div id="empty" class="empty">
+      <div><strong>Your tile room is ready.</strong><span>Create or join a room, then choose a tile above.</span></div>
+    </div>
+  </div>
+  <div class="help">
+    <span>Click a tile to add it. Drag board tiles with your mouse or finger.</span>
+    <span>Teacher and student should use the exact same room link.</span>
+  </div>
 </section>
 </main>
 
@@ -89,6 +139,7 @@ button,input{font:inherit}
 "use strict";
 
 const API="https://rootsrundeepliteracy.pottersclay.workers.dev";
+
 const sets={
   vowels:{label:"Vowels",type:"vowel",items:["a","e","i","o","u","y"]},
   consonants:{label:"Consonants",type:"consonant",items:["b","c","d","f","g","h","j","k","l","m","n","p","qu","r","s","t","v","w","x","y","z"]},
@@ -99,234 +150,389 @@ const sets={
   special:{label:"Special",type:"special",items:["e","'","-","•","/"]}
 };
 
-const groups=document.getElementById("groups"),search=document.getElementById("search"),board=document.getElementById("board"),empty=document.getElementById("empty"),count=document.getElementById("count");
-const roomCode=document.getElementById("roomCode"),statusDot=document.getElementById("statusDot"),statusText=document.getElementById("statusText"),copyLink=document.getElementById("copyLink");
-const undoBtn=document.getElementById("undo"),redoBtn=document.getElementById("redo"),dupBtn=document.getElementById("dup"),delBtn=document.getElementById("del");
+const groups=document.getElementById("groups");
+const search=document.getElementById("search");
+const board=document.getElementById("board");
+const empty=document.getElementById("empty");
+const count=document.getElementById("count");
+const roomCode=document.getElementById("roomCode");
+const statusDot=document.getElementById("statusDot");
+const statusText=document.getElementById("statusText");
+const copyLink=document.getElementById("copyLink");
+const undoBtn=document.getElementById("undo");
+const redoBtn=document.getElementById("redo");
+const dupBtn=document.getElementById("dup");
+const delBtn=document.getElementById("del");
 
-let currentRoom="",selected=null,drag=null,nextId=1,history=[],hi=-1,pollTimer=null,lastRev=-1,applyingRemote=false,busy=false;
+let selected=null;
+let drag=null;
+let history=[];
+let hi=-1;
+let currentRoom="";
+let lastRev=-1;
+let pollTimer=null;
+let posting=false;
+let applyingRemote=false;
+let nextId=1;
 
 function setStatus(text,mode="off"){
   statusText.textContent=text;
-  statusDot.className="dot"+(mode==="on"?" online":mode==="wait"?" wait":"");
+  statusDot.className="dot";
+  if(mode==="on")statusDot.classList.add("online");
+  if(mode==="wait")statusDot.classList.add("wait");
 }
-function cleanRoom(v){return String(v||"").toUpperCase().replace(/[^A-Z0-9_-]/g,"").slice(0,12)}
-function makeRoom(){
-  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const bytes=new Uint8Array(8);crypto.getRandomValues(bytes);
-  return [...bytes].map(b=>chars[b%chars.length]).join("");
-}
-function shareUrl(code){const u=new URL(location.href);u.searchParams.set("room",code);return u.toString()}
 
-async function getRoomState(code){
-  const res=await fetch(`${API}/state?room=${encodeURIComponent(code)}&t=${Date.now()}`,{
+function cleanRoom(value){
+  return String(value||"").toUpperCase().replace(/[^A-Z0-9_-]/g,"").slice(0,12);
+}
+
+function randomRoom(){
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const bytes=new Uint8Array(8);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes,b=>chars[b%chars.length]).join("");
+}
+
+function roomLink(code){
+  const url=new URL(window.location.href);
+  url.searchParams.set("room",code);
+  return url.toString();
+}
+
+async function fetchState(room){
+  const response=await fetch(`${API}/state?room=${encodeURIComponent(room)}&ts=${Date.now()}`,{
     method:"GET",
     mode:"cors",
     cache:"no-store"
   });
-  if(!res.ok) throw new Error(`Server returned ${res.status}`);
-  const msg=await res.json();
-  if(!msg.ok) throw new Error(msg.error||"Room error");
-  return msg;
+  if(!response.ok)throw new Error(`GET ${response.status}`);
+  const data=await response.json();
+  if(!data.ok)throw new Error(data.error||"Room read failed");
+  return data;
 }
 
-async function postRoomState(code,boardState){
-  const res=await fetch(`${API}/state?room=${encodeURIComponent(code)}`,{
-    method:"POST",
-    mode:"cors",
-    cache:"no-store",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({board:boardState})
-  });
-  if(!res.ok) throw new Error(`Server returned ${res.status}`);
-  const msg=await res.json();
-  if(!msg.ok) throw new Error(msg.error||"Room error");
-  return msg;
+async function saveState(){
+  if(!currentRoom||applyingRemote||posting)return;
+  posting=true;
+  try{
+    const response=await fetch(`${API}/state?room=${encodeURIComponent(currentRoom)}`,{
+      method:"POST",
+      mode:"cors",
+      cache:"no-store",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({board:serialize()})
+    });
+    if(!response.ok)throw new Error(`POST ${response.status}`);
+    const result=await response.json();
+    if(!result.ok)throw new Error(result.error||"Room save failed");
+    lastRev=Number(result.rev||lastRev);
+    setStatus("Live","on");
+  }catch(error){
+    console.error("RootRoom save error:",error);
+    setStatus("Connection problem","off");
+  }finally{
+    posting=false;
+  }
 }
 
-async function connect(code){
-  code=cleanRoom(code);
-  if(!code)return;
-  currentRoom=code;
-  roomCode.value=code;
-  history.replaceState(null,"",shareUrl(code));
-  copyLink.disabled=false;
-  setStatus("Connecting…","wait");
+async function connect(room){
+  room=cleanRoom(room);
+  if(!room)return;
   if(pollTimer)clearInterval(pollTimer);
 
+  currentRoom=room;
+  roomCode.value=room;
+  copyLink.disabled=false;
+  history.replaceState(null,"",roomLink(room));
+  setStatus("Connecting…","wait");
+
   try{
-    const msg=await getRoomState(code);
-    lastRev=Number(msg.rev||0);
+    const state=await fetchState(room);
+    lastRev=Number(state.rev||0);
     applyingRemote=true;
-    restore(msg.board||[]);
+    restore(state.board||[]);
     applyingRemote=false;
     resetHistory();
     setStatus("Live","on");
-    pollTimer=setInterval(poll,400);
-  }catch(err){
-    console.error(err);
+    pollTimer=setInterval(poll,450);
+  }catch(error){
+    console.error("RootRoom connect error:",error);
     setStatus("Connection problem","off");
   }
 }
 
 async function poll(){
-  if(!currentRoom||drag||busy)return;
+  if(!currentRoom||drag||posting)return;
   try{
-    const msg=await getRoomState(currentRoom);
+    const state=await fetchState(currentRoom);
     setStatus("Live","on");
-    const rev=Number(msg.rev||0);
+    const rev=Number(state.rev||0);
     if(rev>lastRev){
       lastRev=rev;
       applyingRemote=true;
-      restore(msg.board||[]);
+      restore(state.board||[]);
       applyingRemote=false;
       resetHistory();
     }
-  }catch(err){
-    console.error(err);
+  }catch(error){
+    console.error("RootRoom poll error:",error);
     setStatus("Connection problem","off");
   }
 }
 
-async function syncNow(){
-  if(applyingRemote)return;
-  if(!currentRoom){
-    setStatus("Create or join a room first","wait");
-    return;
-  }
-  busy=true;
-  try{
-    const msg=await postRoomState(currentRoom,serialize());
-    lastRev=Number(msg.rev||lastRev);
-    setStatus("Live","on");
-  }catch(err){
-    console.error(err);
-    setStatus("Connection problem","off");
-  }finally{
-    busy=false;
-  }
-}
-
-function renderTiles(){
+function render(){
   const q=search.value.trim().toLowerCase();
   groups.innerHTML="";
-  Object.values(sets).forEach(g=>{
-    const matches=g.items.filter(t=>t.toLowerCase().includes(q));
+  Object.values(sets).forEach(group=>{
+    const matches=group.items.filter(item=>item.toLowerCase().includes(q));
     if(q&&!matches.length)return;
-    const section=document.createElement("section");section.className="group";
-    const h=document.createElement("h3");h.textContent=g.label;
-    const tray=document.createElement("div");tray.className="tray";
+
+    const section=document.createElement("section");
+    section.className="group";
+
+    const heading=document.createElement("h3");
+    heading.textContent=group.label;
+
+    const tray=document.createElement("div");
+    tray.className="tray";
+
     matches.forEach(text=>{
-      const b=document.createElement("button");b.type="button";b.className=`tile lib ${g.type}`;b.textContent=text;
-      if(text==="y")b.title=`y acting as a ${g.type==="vowel"?"vowel":"consonant"}`;
-      b.addEventListener("click",()=>{
-        const n=board.querySelectorAll(".board-tile").length,off=22*(n%9);
-        addTile(text,g.type,55+off,75+off,true);
-        remember();syncNow();
+      const button=document.createElement("button");
+      button.type="button";
+      button.className=`tile lib ${group.type}`;
+      button.textContent=text;
+      if(text==="y")button.title=`y acting as a ${group.type==="vowel"?"vowel":"consonant"}`;
+      button.addEventListener("click",()=>{
+        if(!currentRoom){
+          setStatus("Create or join a room first","wait");
+          return;
+        }
+        const n=board.querySelectorAll(".board-tile").length;
+        const offset=22*(n%9);
+        addTile(text,group.type,55+offset,75+offset,true);
+        remember();
+        saveState();
       });
-      tray.appendChild(b);
+      tray.appendChild(button);
     });
-    section.append(h,tray);groups.appendChild(section);
+
+    section.append(heading,tray);
+    groups.appendChild(section);
   });
 }
 
 function addTile(text,type,x,y,selectIt,id){
-  const e=document.createElement("div");
-  e.className=`tile board-tile ${type}`;
-  e.textContent=text;
-  e.dataset.text=text;e.dataset.type=type;e.dataset.id=id||`t${Date.now().toString(36)}${nextId++}`;
-  e.style.left=Math.max(0,Number(x)||0)+"px";e.style.top=Math.max(0,Number(y)||0)+"px";
-  e.addEventListener("pointerdown",startDrag);
-  e.addEventListener("click",ev=>{ev.stopPropagation();selectTile(e)});
-  e.addEventListener("dblclick",ev=>{ev.preventDefault();ev.stopPropagation();selectTile(e);duplicateSelected()});
-  board.appendChild(e);
-  if(selectIt)selectTile(e);
-  updateUI();
+  const tile=document.createElement("div");
+  tile.className=`tile board-tile ${type}`;
+  tile.textContent=text;
+  tile.dataset.text=text;
+  tile.dataset.type=type;
+  tile.dataset.id=id||`t${Date.now().toString(36)}${nextId++}`;
+  tile.style.left=Math.max(0,Number(x)||0)+"px";
+  tile.style.top=Math.max(0,Number(y)||0)+"px";
+
+  tile.addEventListener("pointerdown",startDrag);
+  tile.addEventListener("click",event=>{
+    event.stopPropagation();
+    selectTile(tile);
+  });
+  tile.addEventListener("dblclick",event=>{
+    event.preventDefault();
+    event.stopPropagation();
+    selectTile(tile);
+    duplicateSelected();
+  });
+
+  board.appendChild(tile);
+  if(selectIt)selectTile(tile);
+  update();
+  return tile;
 }
-function selectTile(e){
-  if(selected&&selected!==e)selected.classList.remove("selected");
-  selected=e;if(selected)selected.classList.add("selected");updateUI();
+
+function selectTile(tile){
+  if(selected&&selected!==tile)selected.classList.remove("selected");
+  selected=tile;
+  if(selected)selected.classList.add("selected");
+  update();
 }
-function startDrag(ev){
-  if(ev.button!==undefined&&ev.button!==0)return;
-  const e=ev.currentTarget;ev.preventDefault();ev.stopPropagation();selectTile(e);
-  const r=e.getBoundingClientRect();
-  drag={e,id:ev.pointerId,dx:ev.clientX-r.left,dy:ev.clientY-r.top,l:parseFloat(e.style.left)||0,t:parseFloat(e.style.top)||0};
-  e.classList.add("dragging");
-  try{e.setPointerCapture(ev.pointerId)}catch{}
-  e.addEventListener("pointermove",moveDrag);e.addEventListener("pointerup",endDrag);e.addEventListener("pointercancel",endDrag);
+
+function startDrag(event){
+  if(event.button!==undefined&&event.button!==0)return;
+
+  const tile=event.currentTarget;
+  event.preventDefault();
+  event.stopPropagation();
+  selectTile(tile);
+
+  const rect=tile.getBoundingClientRect();
+  drag={
+    tile,
+    pointerId:event.pointerId,
+    dx:event.clientX-rect.left,
+    dy:event.clientY-rect.top,
+    startLeft:parseFloat(tile.style.left)||0,
+    startTop:parseFloat(tile.style.top)||0
+  };
+
+  tile.classList.add("dragging");
+  try{tile.setPointerCapture(event.pointerId)}catch{}
+
+  tile.addEventListener("pointermove",moveDrag);
+  tile.addEventListener("pointerup",endDrag);
+  tile.addEventListener("pointercancel",endDrag);
 }
-function moveDrag(ev){
-  if(!drag||ev.pointerId!==drag.id)return;
-  ev.preventDefault();
-  const r=board.getBoundingClientRect(),e=drag.e;
-  e.style.left=Math.max(0,Math.min(board.clientWidth-e.offsetWidth,ev.clientX-r.left-drag.dx))+"px";
-  e.style.top=Math.max(0,Math.min(board.clientHeight-e.offsetHeight,ev.clientY-r.top-drag.dy))+"px";
+
+function moveDrag(event){
+  if(!drag||event.pointerId!==drag.pointerId)return;
+  event.preventDefault();
+
+  const rect=board.getBoundingClientRect();
+  const tile=drag.tile;
+  const x=Math.max(0,Math.min(board.clientWidth-tile.offsetWidth,event.clientX-rect.left-drag.dx));
+  const y=Math.max(0,Math.min(board.clientHeight-tile.offsetHeight,event.clientY-rect.top-drag.dy));
+
+  tile.style.left=x+"px";
+  tile.style.top=y+"px";
 }
+
 function endDrag(){
   if(!drag)return;
-  const d=drag,e=d.e;
-  e.classList.remove("dragging");
-  e.removeEventListener("pointermove",moveDrag);e.removeEventListener("pointerup",endDrag);e.removeEventListener("pointercancel",endDrag);
+
+  const {tile,startLeft,startTop}=drag;
+  tile.classList.remove("dragging");
+  tile.removeEventListener("pointermove",moveDrag);
+  tile.removeEventListener("pointerup",endDrag);
+  tile.removeEventListener("pointercancel",endDrag);
+
   drag=null;
-  const changed=Math.abs((parseFloat(e.style.left)||0)-d.l)>.5||Math.abs((parseFloat(e.style.top)||0)-d.t)>.5;
-  if(changed){remember();syncNow()}
+
+  const changed=
+    Math.abs((parseFloat(tile.style.left)||0)-startLeft)>.5 ||
+    Math.abs((parseFloat(tile.style.top)||0)-startTop)>.5;
+
+  if(changed){
+    remember();
+    saveState();
+  }
 }
+
 function duplicateSelected(){
-  if(!selected)return;
-  addTile(selected.dataset.text,selected.dataset.type,(parseFloat(selected.style.left)||0)+68,(parseFloat(selected.style.top)||0)+68,true);
-  remember();syncNow();
+  if(!selected||!currentRoom)return;
+  addTile(
+    selected.dataset.text,
+    selected.dataset.type,
+    (parseFloat(selected.style.left)||0)+68,
+    (parseFloat(selected.style.top)||0)+68,
+    true
+  );
+  remember();
+  saveState();
 }
+
 function deleteSelected(){
-  if(!selected)return;
-  selected.remove();selected=null;updateUI();remember();syncNow();
+  if(!selected||!currentRoom)return;
+  selected.remove();
+  selected=null;
+  update();
+  remember();
+  saveState();
 }
+
 function clearAll(){
+  if(!currentRoom){
+    setStatus("Create or join a room first","wait");
+    return;
+  }
   if(!board.querySelector(".board-tile"))return;
   if(!confirm("Clear every tile from this shared room?"))return;
-  board.querySelectorAll(".board-tile").forEach(e=>e.remove());
-  selected=null;updateUI();remember();syncNow();
+
+  board.querySelectorAll(".board-tile").forEach(tile=>tile.remove());
+  selected=null;
+  update();
+  remember();
+  saveState();
 }
+
 function serialize(){
-  return [...board.querySelectorAll(".board-tile")].map(e=>({
-    id:e.dataset.id,text:e.dataset.text,type:e.dataset.type,
-    left:parseFloat(e.style.left)||0,top:parseFloat(e.style.top)||0
+  return [...board.querySelectorAll(".board-tile")].map(tile=>({
+    id:tile.dataset.id,
+    text:tile.dataset.text,
+    type:tile.dataset.type,
+    left:parseFloat(tile.style.left)||0,
+    top:parseFloat(tile.style.top)||0
   }));
 }
-function restore(arr){
-  board.querySelectorAll(".board-tile").forEach(e=>e.remove());
+
+function restore(items){
+  board.querySelectorAll(".board-tile").forEach(tile=>tile.remove());
   selected=null;
-  (arr||[]).forEach(i=>addTile(i.text,i.type,i.left,i.top,false,i.id));
-  updateUI();
+  (items||[]).forEach(item=>{
+    addTile(item.text,item.type,item.left,item.top,false,item.id);
+  });
+  update();
 }
+
 function remember(){
-  const s=JSON.stringify(serialize());
-  if(hi>=0&&history[hi]===s)return;
-  history=history.slice(0,hi+1);history.push(s);hi=history.length-1;
-  if(history.length>50){history.shift();hi--}
-  updateUI();
+  const snapshot=JSON.stringify(serialize());
+  if(hi>=0&&history[hi]===snapshot)return;
+  history=history.slice(0,hi+1);
+  history.push(snapshot);
+  hi=history.length-1;
+  if(history.length>50){
+    history.shift();
+    hi--;
+  }
+  update();
 }
-function resetHistory(){history=[JSON.stringify(serialize())];hi=0;updateUI()}
+
+function resetHistory(){
+  history=[JSON.stringify(serialize())];
+  hi=0;
+  update();
+}
+
 function undo(){
-  if(hi<=0)return;
-  hi--;applyingRemote=true;restore(JSON.parse(history[hi]));applyingRemote=false;updateUI();syncNow();
+  if(hi<=0||!currentRoom)return;
+  hi--;
+  applyingRemote=true;
+  restore(JSON.parse(history[hi]));
+  applyingRemote=false;
+  saveState();
 }
+
 function redo(){
-  if(hi>=history.length-1)return;
-  hi++;applyingRemote=true;restore(JSON.parse(history[hi]));applyingRemote=false;updateUI();syncNow();
+  if(hi>=history.length-1||!currentRoom)return;
+  hi++;
+  applyingRemote=true;
+  restore(JSON.parse(history[hi]));
+  applyingRemote=false;
+  saveState();
 }
-function updateUI(){
+
+function update(){
   const n=board.querySelectorAll(".board-tile").length;
   count.textContent=n+" "+(n===1?"tile":"tiles");
   empty.classList.toggle("hidden",n>0);
-  undoBtn.disabled=hi<=0;redoBtn.disabled=hi<0||hi>=history.length-1;
-  dupBtn.disabled=!selected;delBtn.disabled=!selected;
+  undoBtn.disabled=hi<=0;
+  redoBtn.disabled=hi<0||hi>=history.length-1;
+  dupBtn.disabled=!selected;
+  delBtn.disabled=!selected;
 }
 
-document.getElementById("createRoom").addEventListener("click",()=>connect(makeRoom()));
-document.getElementById("joinRoom").addEventListener("click",()=>connect(roomCode.value));
-roomCode.addEventListener("keydown",e=>{if(e.key==="Enter")connect(roomCode.value)});
+document.getElementById("createRoom").addEventListener("click",()=>{
+  connect(randomRoom());
+});
+
+document.getElementById("joinRoom").addEventListener("click",()=>{
+  connect(roomCode.value);
+});
+
+roomCode.addEventListener("keydown",event=>{
+  if(event.key==="Enter")connect(roomCode.value);
+});
+
 copyLink.addEventListener("click",async()=>{
-  const link=shareUrl(currentRoom);
+  const link=roomLink(currentRoom);
   try{
     await navigator.clipboard.writeText(link);
     copyLink.textContent="Copied!";
@@ -335,20 +541,36 @@ copyLink.addEventListener("click",async()=>{
     prompt("Copy this student link:",link);
   }
 });
-search.addEventListener("input",renderTiles);
-board.addEventListener("pointerdown",ev=>{
-  if(ev.target===board){
+
+search.addEventListener("input",render);
+
+board.addEventListener("pointerdown",event=>{
+  if(event.target===board){
     if(selected)selected.classList.remove("selected");
-    selected=null;updateUI();
+    selected=null;
+    update();
   }
 });
-undoBtn.addEventListener("click",undo);redoBtn.addEventListener("click",redo);
-dupBtn.addEventListener("click",duplicateSelected);delBtn.addEventListener("click",deleteSelected);
+
+undoBtn.addEventListener("click",undo);
+redoBtn.addEventListener("click",redo);
+dupBtn.addEventListener("click",duplicateSelected);
+delBtn.addEventListener("click",deleteSelected);
 document.getElementById("clear").addEventListener("click",clearAll);
 
-renderTiles();resetHistory();
-const initialRoom=cleanRoom(new URL(location.href).searchParams.get("room"));
+document.getElementById("full").addEventListener("click",async()=>{
+  try{
+    if(!document.fullscreenElement)await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
+  }catch{}
+});
+
+render();
+resetHistory();
+
+const initialRoom=cleanRoom(new URL(window.location.href).searchParams.get("room"));
 if(initialRoom)connect(initialRoom);
+
 })();
 </script>
 </body>
