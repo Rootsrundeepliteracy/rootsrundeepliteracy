@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rootsrundeepliteracy",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-12",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOMS",
+        "class_name": "RootRoomSession"
+      }
+    ]
+  },
+  "exports": {
+    "RootRoomRoom": {
+      "type": "durable-object",
+      "state": "deleted"
+    },
+    "RootRoomSession": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  }
+}
