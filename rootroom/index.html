@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>RootRoom Live v3</title>
+<title>RootRoom Live v3.1</title>
 <style>
 :root{
   --forest:#355144;--forest-dark:#2a4136;--ink:#26372f;--muted:#69776f;
@@ -66,6 +66,13 @@ button,input{font:inherit}
 .empty strong{display:block;color:#607068;margin-bottom:3px}
 .hidden{display:none!important}
 .help{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:7px 10px;border-top:1px solid var(--line);background:#faf8f3;font-size:.77rem;color:#6c7872}
+
+.diagnostic{background:#fffdf8;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:10px 12px}
+.diagnostic-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.diagnostic h2{margin:0;font-size:.95rem}
+.diagnostic p{margin:4px 0 0;color:var(--muted);font-size:.78rem}
+#diagOutput{margin-top:9px;padding:10px;border-radius:10px;background:#f7f5ef;border:1px solid #dedfd8;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;min-height:52px}
+
 @media(max-width:1250px){.groups{grid-template-columns:repeat(3,minmax(210px,1fr))}}
 @media(max-width:900px){.groups{grid-template-columns:repeat(2,minmax(210px,1fr))}}
 @media(max-width:620px){
@@ -81,7 +88,7 @@ button,input{font:inherit}
 <header class="topbar">
   <div class="brand">
     <div class="brand-mark">🌳</div>
-    <div><h1>RootRoom Live</h1><p>Shared Interactive Tile Room · v3</p></div>
+    <div><h1>RootRoom Live</h1><p>Shared Interactive Tile Room · v3.1</p></div>
   </div>
   <div class="actions">
     <button id="full" class="head-btn">Full Screen</button>
@@ -100,6 +107,14 @@ button,input{font:inherit}
     <span id="statusText">Not connected</span>
   </div>
   <div class="live-help">Create a room, send the student link, and both of you work on the same board.</div>
+</section>
+
+<section class="diagnostic">
+  <div class="diagnostic-head">
+    <div><h2>Connection Check</h2><p>This tests the browser-to-RootRoom server connection without changing your board.</p></div>
+    <button id="testConnection" class="secondary-btn">Test Connection</button>
+  </div>
+  <div id="diagOutput">Ready to test.</div>
 </section>
 
 <section class="tile-bank">
@@ -518,6 +533,57 @@ function update(){
   dupBtn.disabled=!selected;
   delBtn.disabled=!selected;
 }
+
+async function runDiagnostics(){
+  const out=document.getElementById("diagOutput");
+  const testRoom="DIAG"+Date.now().toString(36).toUpperCase().slice(-6);
+  out.textContent="Testing…";
+  const lines=[];
+  async function attempt(label,fn){
+    try{
+      const result=await fn();
+      lines.push(`✓ ${label}: ${result}`);
+      out.textContent=lines.join("\n");
+      return true;
+    }catch(error){
+      lines.push(`✗ ${label}: ${error && error.message ? error.message : String(error)}`);
+      out.textContent=lines.join("\n");
+      return false;
+    }
+  }
+  const healthOK=await attempt("Health check",async()=>{
+    const r=await fetch(`${API}/health?ts=${Date.now()}`,{mode:"cors",cache:"no-store"});
+    const text=await r.text();
+    if(!r.ok)throw new Error(`HTTP ${r.status} ${text}`);
+    return text;
+  });
+  const readOK=await attempt("Room read",async()=>{
+    const r=await fetch(`${API}/state?room=${encodeURIComponent(testRoom)}&ts=${Date.now()}`,{mode:"cors",cache:"no-store"});
+    const text=await r.text();
+    if(!r.ok)throw new Error(`HTTP ${r.status} ${text}`);
+    return text;
+  });
+  const writeOK=await attempt("Room write",async()=>{
+    const r=await fetch(`${API}/state?room=${encodeURIComponent(testRoom)}`,{
+      method:"POST",mode:"cors",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify({board:[]})
+    });
+    const text=await r.text();
+    if(!r.ok)throw new Error(`HTTP ${r.status} ${text}`);
+    return text;
+  });
+  if(healthOK&&readOK&&writeOK){
+    lines.push("\nRESULT: Browser connection is healthy. The remaining bug is inside RootRoom room-state logic.");
+  }else if(!healthOK){
+    lines.push("\nRESULT: The browser cannot reach the Worker at all. This points to a browser/CORS/security restriction.");
+  }else if(healthOK&&!readOK){
+    lines.push("\nRESULT: The Worker is reachable, but room reads are failing.");
+  }else if(healthOK&&readOK&&!writeOK){
+    lines.push("\nRESULT: Reads work, but writes/preflight are failing. This strongly points to CORS/preflight handling.");
+  }
+  out.textContent=lines.join("\n");
+}
+
+document.getElementById("testConnection").addEventListener("click",runDiagnostics);
 
 document.getElementById("createRoom").addEventListener("click",()=>{
   connect(randomRoom());
